@@ -1,8 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Loader } from '@googlemaps/js-api-loader';
+import React, { useState } from 'react';
+import { BaseAPILoader, BaseAPILoaderProps } from './api-loader';
+import { MapContext, MapContextProps } from '../context';
 
-export interface APILoaderProps {}
+export const APILoader: React.FC<BaseAPILoaderProps> = (props) => {
+  const [googleMaps, setGoogleMaps] = useState<typeof google.maps>();
 
-export const APILoader: React.FC<APILoaderProps> = ({}) => {
-  return null;
+  const handleComplete = (maps) => {
+    console.log(maps);
+    setGoogleMaps(maps);
+  };
+
+  return (
+    <MapContext.Provider
+      value={
+        {
+          googleMaps,
+        } as MapContextProps
+      }
+    >
+      <BaseAPILoader {...props} onComplete={handleComplete} />
+    </MapContext.Provider>
+  );
 };
